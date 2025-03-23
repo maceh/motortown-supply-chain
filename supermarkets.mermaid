@@ -1,5 +1,43 @@
 graph LR
 
+    subgraph Crude Oil Production
+        subgraph Oji Drilling
+            OjiCrudeOil(OUT: Crude Oil, Max 300)
+            OjiPassive(PROC: Passive) -->|1 Crude Oil| OjiCrudeOil
+            OjiMake20Crude(PROC: Make 20 Crude Oil) -->|20 Crude Oil| OjiCrudeOil
+            OjiInFuel(IN: Fuel, Max 100) -->|5 Fuel| OjiMake20Crude
+            OjiInPlanks(IN: Wood Planks, Max 100) -->|1 Wood Plank| OjiMake20Crude
+            OjiFuelContract{{CONTRACT: Supply 20/40/80/200 Fuel}}
+            OjiPlankContract{{CONTRACT: Supply 5/10/20/50 Wood Planks}}
+        end
+    end
+
+    subgraph Fuel and Oil Production
+        subgraph Jeju Harbor
+            JJOutFuel(OUT: Fuel, Max 50)
+            JJPassive(PROC: Passive) -->|1 Fuel| JJOutFuel
+            JJInCrude(IN: Crude Oil, Max 100) -->|1 Fuel| JJOutFuel
+        end
+        subgraph Sanho Oil Refinery
+            SanhoOutFuel(OUT: Fuel, Max 500)
+            SanhoOutOil(OUT: Oil, Max 500)
+            SanhoInCrude(IN: Crude Oil, Max 300)
+            SanhoInContainer(IN: Container, Soft Cap 200~)
+
+            SanhoInCrude -->|5 Crude Oil| SanhoMake10Fuel(PROC: Make 10 Fuel) -->|10 Fuel| SanhoOutFuel
+
+            SanhoInCrude -->|10 Crude Oil| SanhoMake30Fuel(PROC: Make 30 Fuel) -->|30 Fuel| SanhoOutFuel
+            SanhoInContainer -->|1 Container| SanhoMake30Fuel
+
+            SanhoInCrude -->|2 Crude Oil| SanhoMake4Oil(PROC: Make 4 Oil) -->|4 oil| SanhoOutOil
+
+            SanhoInCrude -->|10 Crude Oil| SanhoMake30Oil(PROC: Make 30 Oil) -->|30 oil| SanhoOutOil
+            SanhoInContainer -->|1 Container| SanhoMake30Oil
+
+            SanhooilContract{{CONTRACT: Supply 20/40/80/200 Crude Oil}}
+        end
+    end
+
     subgraph Container Production
         subgraph Dasa Harbor
             DHContainer(OUT: Container, Max ?)
