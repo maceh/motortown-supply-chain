@@ -1,0 +1,107 @@
+graph LR
+    subgraph Supermarket
+        WaterBottle(IN: Water Bottle Pallet, Max 5) -->|+20%| FoodSupply
+        Rice(IN: Rice Pallet, Max 3) -->|+10%| FoodSupply
+        Pumpkin(IN: Pumpkin Pallet, Max 3) -->|+10%| FoodSupply
+        Cabbage(IN: Cabbage Pallet, Max 3) -->|+10%| FoodSupply
+        Potato(IN: Potato Pallet, Max 3) -->|+10%| FoodSupply
+        Corn(IN: Corn Pallet, Max 3) -->|+10%| FoodSupply
+        Orange(IN: Orange Pallet, Max 3) -->|+10%| FoodSupply
+        Bean(IN: Bean Pallet, Max 3) -->|+10%| FoodSupply
+        Cheese(IN: Cheese Pallet, Max 3) -->|+20%| FoodSupply
+        Bread(IN: Bread Pallet, Max 3)  -->|+20%| FoodSupply
+        Meat(IN: Meat Box, Max 5) -->|+30%| FoodSupply
+        Toys(IN: Pallet of Toys, Max 3) --> Sink
+
+        FoodSupply[Food Supply]
+        Sink[Sink]
+    end
+
+    subgraph Rice Farms
+        subgraph Hanon Rice Farm
+            MakeRice1(OUT: Rice Pallets, Max 10) --> Rice
+        end
+    end
+
+    subgraph Pumpkin Farms
+        subgraph Aewol Pumpkin Farm
+            MakePumpkin1(OUT: Pumpkin Pallets, Max 10) --> Pumpkin
+        end
+        subgraph Sinchang Pumpkin Farm
+            MakePumpkin2(OUT: Pumpkin Pallets, Max 10) --> Pumpkin
+        end
+    end
+    
+    subgraph Cabbage Farms
+        subgraph Gapa Organic Cabbage Farm
+            MakeCabbage1(OUT: Cabbage Pallets, Max 10) --> Cabbage
+        end
+    end
+
+    subgraph Corn Farms
+        subgraph Gapa Golden Corn Farm
+            MakeCorn1(OUT: Corn Pallets, Max 10) --> Corn
+        end
+        subgraph Namwon Corn Farm
+            MakeCorn2(OUT: Corn Pallets, Max 10) --> Corn
+        end
+        subgraph Sangdo Corn Farm
+            MakeCorn3(OUT: Corn Pallets, Max 10) --> Corn
+        end
+    end
+    subgraph Orange Farms
+        subgraph Hachon Orange Farm
+            MakeOrange(OUT: Orange Pallets, Max 10) --> Orange
+        end
+    end
+
+    subgraph Bean Farms
+        subgraph Gapa Bean Haven Farm
+            MakeBean1(OUT: Bean Pallets, Max 10) --> Bean
+        end
+    end
+
+    subgraph Cheese Production
+        subgraph Daily Cheese Inc.
+            DCInMilk(IN: Milk, Max 100) --> OutCheesePallet(OUT: Cheese Pallets, Max 100) --> Cheese
+            DCInMilk --> OutCheeseBox(OUT: Cheese Box, Max 100)
+        end
+    end
+
+    subgraph Milk Production
+        subgraph Ranch
+            RanchOutMilk(OUT: Milk, Max 200) --> DCInMilk
+        end
+        subgraph Gasi Ranch
+            GasiRanchOutMilk(OUT: Milk, Max 10) --> DCInMilk
+        end
+    end
+
+    subgraph Bread Production
+        subgraph Jeju Bakery
+            JJBInContainer(IN: Container, Max ?) --> OutBreadPallet(OUT: Bread Pallet, Max ?) --> Bread
+            JJBInContainer --> OutBreadBox(OUT: Bread Box, Max ?)
+            JJBInLargePackage(IN: Large Package, Max ?) --> OutBreadPallet
+            JJBInLargePackage --> OutBreadBox
+        end
+    end
+
+    subgraph Meat Production
+        subgraph Gujwa Meat Factory
+            GMFInContainer(IN: Container, Max ?) --> OutMeatBox(OUT: Meat Box, Max ?) --> Meat
+        end
+    end
+
+    subgraph Container Production
+        subgraph Dasa Harbor
+            DHContainer(OUT: Container, Max ?)
+        end
+        subgraph Jeju Harbor
+            JJContainer(OUT: Container, Max ?)
+        end
+
+        DHContainer --> JJBInContainer
+        DHContainer --> GMFInContainer
+        JJContainer --> JJBInContainer
+        JJContainer --> GMFInContainer
+    end
