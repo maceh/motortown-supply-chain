@@ -16,12 +16,12 @@ graph LR
         subgraph Jeju Harbor
             JJOutFuel(OUT: Fuel, Max 50)
             JJPassive(PROC: Passive) -->|1 Fuel| JJOutFuel
-            JJInCrude(IN: Crude Oil, Max 100) -->|1 Fuel| JJOutFuel
+            OjiCrudeOil --> JJInCrude(IN: Crude Oil, Max 100) -->|1 Fuel| JJOutFuel
         end
         subgraph Sanho Oil Refinery
             SanhoOutFuel(OUT: Fuel, Max 500)
             SanhoOutOil(OUT: Oil, Max 500)
-            SanhoInCrude(IN: Crude Oil, Max 300)
+            OjiCrudeOil --> SanhoInCrude(IN: Crude Oil, Max 300)
             SanhoInContainer(IN: Container, Soft Cap 200~)
 
             SanhoInCrude -->|5 Crude Oil| SanhoMake10Fuel(PROC: Make 10 Fuel) -->|10 Fuel| SanhoOutFuel
@@ -34,8 +34,29 @@ graph LR
             SanhoInCrude -->|10 Crude Oil| SanhoMake30Oil(PROC: Make 30 Oil) -->|30 oil| SanhoOutOil
             SanhoInContainer -->|1 Container| SanhoMake30Oil
 
-            SanhooilContract{{CONTRACT: Supply 20/40/80/200 Crude Oil}}
+            SanhoOilContract{{CONTRACT: Supply 20/40/80/200 Crude Oil}}
         end
+        subgraph Noksan Fuel Storage
+            NoksanInFuel(IN: Fuel, Max 100) --> NoksanOutFuel(OUT: Fuel, Max 500)
+            NoksanFuelContract{{CONTRACT: Supply ??? Fuel}}
+
+            JJOutFuel --> NoksanInFuel
+            SanhoOutFuel --> NoksanInFuel
+        end
+    end
+
+    subgraph Fuel
+        FuelAgg(FUEL)
+
+        JJOutFuel --> FuelAgg
+        SanhoOutFuel --> FuelAgg
+        NoksanOutFuel --> FuelAgg
+    end
+
+    subgraph Oil
+        OilAgg(OIL)
+
+        SanhoOutOil --> OilAgg
     end
 
     subgraph Container Production
@@ -48,6 +69,13 @@ graph LR
         subgraph Overseas Import Company
             OICContainer(OUT: Container, Max ?)
         end
+    end
+
+    subgraph Container
+        ContainerAgg(CONTAINER)
+        DHContainer --> ContainerAgg
+        JJContainer --> ContainerAgg
+        OICContainer --> ContainerAgg
     end
 
     subgraph Supermarket
@@ -73,18 +101,15 @@ graph LR
     subgraph Water Bottle Production
         subgraph Three Water Factory
             OutWaterBottle(OUT: Water Bottle Pallet, Max ?) --> WaterBottle
-            TWFInContainer(IN: Container, Max ?) --> OutWaterBottle
+            ContainerAgg --> TWFInContainer(IN: Container, Max ?) --> OutWaterBottle
             TWFInLargePackage(IN: Large Package, Max ?) --> OutWaterBottle
             TWFInFuel(IN: Fuel, Max ?) --> TWFSink[[Sink]]
-            DHContainer --> TWFInContainer
-            JJContainer --> TWFInContainer
-            OICContainer --> TWFInContainer
         end
     end
 
     subgraph Rice Farms
         subgraph Hanon Rice Farm
-            HRInFuel(IN: Fuel, Max ?)
+            FuelAgg --> HRInFuel(IN: Fuel, Max ?)
             HRInLargePackage(IN: Large Package, Max ?)
             MakeRice1(OUT: Rice Pallets, Max 10) --> Rice
         end
@@ -92,12 +117,12 @@ graph LR
 
     subgraph Pumpkin Farms
         subgraph Aewol Pumpkin Farm
-            APInFuel(IN: Fuel, Max ?)
+            FuelAgg --> APInFuel(IN: Fuel, Max ?)
             APInLargePackage(IN: Large Package, Max ?)
             MakePumpkin1(OUT: Pumpkin Pallets, Max 10) --> Pumpkin
         end
         subgraph Sinchang Pumpkin Farm
-            SPInFuel(IN: Fuel, Max ?)
+            FuelAgg --> SPInFuel(IN: Fuel, Max ?)
             SPInLargePackage(IN: Large Package, Max ?)
             MakePumpkin2(OUT: Pumpkin Pallets, Max 10) --> Pumpkin
         end
@@ -105,7 +130,7 @@ graph LR
     
     subgraph Cabbage Farms
         subgraph Gapa Organic Cabbage Farm
-            GOCInFuel(IN: Fuel, Max ?)
+            FuelAgg --> GOCInFuel(IN: Fuel, Max ?)
             GOCInLargePackage(IN: Large Package, Max ?)
             MakeCabbage1(OUT: Cabbage Pallets, Max 10) --> Cabbage
         end
@@ -113,24 +138,24 @@ graph LR
 
     subgraph Corn Farms
         subgraph Gapa Golden Corn Farm
-            GGCInFuel(IN: Fuel, Max ?)
+            FuelAgg --> GGCInFuel(IN: Fuel, Max ?)
             GGCInLargePackage(IN: Large Package, Max ?)
             MakeCorn1(OUT: Corn Pallets, Max 10) --> Corn
         end
         subgraph Namwon Corn Farm
-            NCInFuel(IN: Fuel, Max ?)
+            FuelAgg --> NCInFuel(IN: Fuel, Max ?)
             NCInLargePackage(IN: Large Package, Max ?)
             MakeCorn2(OUT: Corn Pallets, Max 10) --> Corn
         end
         subgraph Sangdo Corn Farm
-            SCInFuel(IN: Fuel, Max ?)
+            FuelAgg --> SCInFuel(IN: Fuel, Max ?)
             SCInLargePackage(IN: Large Package, Max ?)
             MakeCorn3(OUT: Corn Pallets, Max 10) --> Corn
         end
     end
     subgraph Orange Farms
         subgraph Hachon Orange Farm
-            HOInFuel(IN: Fuel, Max ?)
+            FuelAgg --> HOInFuel(IN: Fuel, Max ?)
             HOInLargePackage(IN: Large Package, Max ?)
             MakeOrange(OUT: Orange Pallets, Max 10) --> Orange
         end
@@ -138,7 +163,7 @@ graph LR
 
     subgraph Bean Farms
         subgraph Gapa Bean Haven Farm
-            GBHInFuel(IN: Fuel, Max ?)
+            FuelAgg --> GBHInFuel(IN: Fuel, Max ?)
             GBHInLargePackage(IN: Large Package, Max ?)
             MakeBean1(OUT: Bean Pallets, Max 10) --> Bean
         end
@@ -146,7 +171,7 @@ graph LR
 
     subgraph Hemp Farms
         subgraph Gapa Starlight Hemp Farm
-            GSHInFuel(IN: Fuel, Max ?)
+            FuelAgg --> GSHInFuel(IN: Fuel, Max ?)
             GSHInLargePackage(IN: Large Package, Max ?)
             MakeHemp1(OUT: Hemp Pallets, Max 10)
         end
@@ -161,12 +186,12 @@ graph LR
 
     subgraph Milk Production
         subgraph Ranch
-            RanchInFuel(IN: Fuel, Max ?) --> RanchSink[[Sink]]
+            FuelAgg --> RanchInFuel(IN: Fuel, Max ?) --> RanchSink[[Sink]]
             RanchInLargePackage(IN: Large Package, Max ?)
             RanchOutMilk(OUT: Milk, Max 200) --> DCInMilk
         end
         subgraph Gasi Ranch
-            GasiRanchInFuel(IN: Fuel, Max ?) --> GasiRanchSink[[Sink]]
+            FuelAgg --> GasiRanchInFuel(IN: Fuel, Max ?) --> GasiRanchSink[[Sink]]
             GasiRanchInLargePackage(IN: Large Package, Max ?)
             GasiRanchOutMilk(OUT: Milk, Max 10) --> DCInMilk
         end
@@ -175,20 +200,44 @@ graph LR
     subgraph Bread Production
         subgraph Jeju Bakery
             JJBInContainer(IN: Container, Max ?) --> OutBreadPallet(OUT: Bread Pallet, Max ?) --> Bread
-            JJBInContainer --> OutBreadBox(OUT: Bread Box, Max ?)
+            ContainerAgg --> JJBInContainer --> OutBreadBox(OUT: Bread Box, Max ?)
             JJBInLargePackage(IN: Large Package, Max ?) --> OutBreadPallet
             JJBInLargePackage --> OutBreadBox
-            DHContainer --> JJBInContainer
-            JJContainer --> JJBInContainer
-            OICContainer --> JJBInContainer
         end
     end
 
     subgraph Meat Production
         subgraph Gujwa Meat Factory
-            GMFInContainer(IN: Container, Max ?) --> OutMeatBox(OUT: Meat Box, Max ?) --> Meat
-            DHContainer --> GMFInContainer
-            JJContainer --> GMFInContainer
-            OICContainer --> GMFInContainer
+            ContainerAgg --> GMFInContainer(IN: Container, Max ?) --> OutMeatBox(OUT: Meat Box, Max ?) --> Meat
+        end
+    end
+
+    subgraph Plastic Production
+        subgraph Jeoji JeojiOutPlasticPipes
+            OilAgg --> JeojiInOil(IN: Oil, Max 200)
+            JeojiInOil -->|20 Oil| JeojiOutPlastic(OUT: Plastic, Max 200)
+            JeojiInOil -->|20 Oil| JeojiOutPlasticPipes(OUT: Plastic Pipes, Max 200)
+            ContainerAgg --> JeojiInContainer(IN: Container) -->|1 Container| JeojiOutPlasticPipes
+            JeojiInLargePackage(IN: Large Package)
+        end
+    end
+
+    subgraph Toy Production
+        subgraph Toy Factory
+            ToyInPlastic(IN: Plastic, Max ?)
+            JeojiOutPlastic --> ToyInPlastic
+
+            ContainerAgg --> ToyInContainer(IN: Container, Max ?)
+
+            ToyInLargePackage(IN: Large Package, Max ?)
+
+            ToyOutPallette(OUT: Toy Pallete, Max ?)
+            ToyOutPallette --> Toys
+
+            ToyInPlastic -->|10 Plastic| ToyMake20Pallete(PROC: Make 20 Toy Pallets) -->|20 Toy Pallets| ToyOutPallette
+            ToyInContainer -->|1 Container| ToyMake20Pallete
+
+            ToyInPlastic -->|3 Plastic|ToyMake6Pallete(PROC: Make 6 Toy Pallets) -->|6 Toy Pallets| ToyOutPallette
+            ToyInLargePackage -->|1 Large Package| ToyMake6Pallete
         end
     end
