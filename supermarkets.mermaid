@@ -22,65 +22,96 @@ graph LR
             OutWaterBottle(OUT: Water Bottle Pallet, Max ?) --> WaterBottle
             TWFInContainer(IN: Container, Max ?) --> OutWaterBottle
             TWFInLargePackage(IN: Large Package, Max ?) --> OutWaterBottle
+            TWFInFuel(IN: Fuel, Max ?) --> TWFSink(Sink)
         end
     end
 
     subgraph Rice Farms
         subgraph Hanon Rice Farm
+            HRInFuel(IN: Fuel, Max ?)
+            HRInLargePackage(IN: Large Package, Max ?)
             MakeRice1(OUT: Rice Pallets, Max 10) --> Rice
         end
     end
 
     subgraph Pumpkin Farms
         subgraph Aewol Pumpkin Farm
+            APInFuel(IN: Fuel, Max ?)
+            APInLargePackage(IN: Large Package, Max ?)
             MakePumpkin1(OUT: Pumpkin Pallets, Max 10) --> Pumpkin
         end
         subgraph Sinchang Pumpkin Farm
+            SPInFuel(IN: Fuel, Max ?)
+            SPInLargePackage(IN: Large Package, Max ?)
             MakePumpkin2(OUT: Pumpkin Pallets, Max 10) --> Pumpkin
         end
     end
     
     subgraph Cabbage Farms
         subgraph Gapa Organic Cabbage Farm
+            GOCInFuel(IN: Fuel, Max ?)
+            GOCInLargePackage(IN: Large Package, Max ?)
             MakeCabbage1(OUT: Cabbage Pallets, Max 10) --> Cabbage
         end
     end
 
     subgraph Corn Farms
         subgraph Gapa Golden Corn Farm
+            GGCInFuel(IN: Fuel, Max ?)
+            GGCInLargePackage(IN: Large Package, Max ?)
             MakeCorn1(OUT: Corn Pallets, Max 10) --> Corn
         end
         subgraph Namwon Corn Farm
+            NCInFuel(IN: Fuel, Max ?)
+            NCInLargePackage(IN: Large Package, Max ?)
             MakeCorn2(OUT: Corn Pallets, Max 10) --> Corn
         end
         subgraph Sangdo Corn Farm
+            SCInFuel(IN: Fuel, Max ?)
+            SCInLargePackage(IN: Large Package, Max ?)
             MakeCorn3(OUT: Corn Pallets, Max 10) --> Corn
         end
     end
     subgraph Orange Farms
         subgraph Hachon Orange Farm
+            HOInFuel(IN: Fuel, Max ?)
+            HOInLargePackage(IN: Large Package, Max ?)
             MakeOrange(OUT: Orange Pallets, Max 10) --> Orange
         end
     end
 
     subgraph Bean Farms
         subgraph Gapa Bean Haven Farm
+            GBHInFuel(IN: Fuel, Max ?)
+            GBHInLargePackage(IN: Large Package, Max ?)
             MakeBean1(OUT: Bean Pallets, Max 10) --> Bean
+        end
+    end
+
+    subgraph Hemp Farms
+        subgraph Gapa Starlight Hemp Farm
+            GSHInFuel(IN: Fuel, Max ?)
+            GSHInLargePackage(IN: Large Package, Max ?)
+            MakeHemp1(OUT: Hemp Pallets, Max 10)
         end
     end
 
     subgraph Cheese Production
         subgraph Daily Cheese Inc.
-            DCInMilk(IN: Milk, Max 100) --> OutCheesePallet(OUT: Cheese Pallets, Max 100) --> Cheese
-            DCInMilk --> OutCheeseBox(OUT: Cheese Box, Max 100)
+            DCInMilk(IN: Milk, Max 100) -->|10s| OutCheesePallet(OUT: Cheese Pallets, Max 100) --> Cheese
+            DCInMilk -->|10s| OutCheeseBox(OUT: Cheese Box, Max 100)
         end
     end
 
     subgraph Milk Production
         subgraph Ranch
+            RanchInFuel(IN: Fuel, Max ?) --> RanchSink(Sink)
+            RanchInLargePackage(IN: Large Package, Max ?)
             RanchOutMilk(OUT: Milk, Max 200) --> DCInMilk
         end
         subgraph Gasi Ranch
+            GasiRanchInFuel(IN: Fuel, Max ?) --> GasiRanchSink(Sink)
+            GasiRanchInLargePackage(IN: Large Package, Max ?)
             GasiRanchOutMilk(OUT: Milk, Max 10) --> DCInMilk
         end
     end
