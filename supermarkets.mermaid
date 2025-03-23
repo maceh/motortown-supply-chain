@@ -17,6 +17,14 @@ graph LR
         Sink[Sink]
     end
 
+    subgraph Water Bottle Production
+        subgraph Three Water Factory
+            OutWaterBottle(OUT: Water Bottle Pallet, Max ?) --> WaterBottle
+            TWFInContainer(IN: Container, Max ?) --> OutWaterBottle
+            TWFInLargePackage(IN: Large Package, Max ?) --> OutWaterBottle
+        end
+    end
+
     subgraph Rice Farms
         subgraph Hanon Rice Farm
             MakeRice1(OUT: Rice Pallets, Max 10) --> Rice
@@ -101,7 +109,11 @@ graph LR
         end
 
         DHContainer --> JJBInContainer
-        DHContainer --> GMFInContainer
         JJContainer --> JJBInContainer
+
+        DHContainer --> GMFInContainer
         JJContainer --> GMFInContainer
+
+        DHContainer --> TWFInContainer
+        JJContainer --> TWFInContainer
     end
